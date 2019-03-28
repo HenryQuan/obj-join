@@ -49,5 +49,6 @@ ObjJoin = (a, b, mode) => {
     return a;
 }
 
+// obj is basically a and this is not really good although it works
 let obj = ObjJoin(a, b, 's');
 console.log(obj);
