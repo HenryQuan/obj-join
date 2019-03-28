@@ -25,4 +25,5 @@ ObjJoin = (a, b, mode) => {
 
 // obj is basically a and this is not really good although it works
 let obj = ObjJoin(ship, ship, '-');
+// Everything should be zero (identical data)
 console.log(obj.data['2011774448'][0].pvp);
