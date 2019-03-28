@@ -1,6 +1,6 @@
 const a = {
     hello: {
-        world: 'hello'
+        world: 999
     },
     number: {
         one: 2
@@ -24,6 +24,11 @@ const b = {
     },
     test: {
         two: 1
+    },
+    extra: {
+        more: {
+            info: 1
+        }
     }
 };
 
@@ -36,8 +41,8 @@ ObjJoin = (a, b, mode) => {
         if (b[k] != null) {
             if (typeof b[k] !== 'object') {
                 // Add or subtract values
-                if (mode === 's') a[k] -= b[k];
-                if (mode === 'a') a[k] += b[k];
+                if (mode === '-') a[k] -= b[k];
+                if (mode === '+') a[k] += b[k];
             } else {
                 // go deeper
                 ObjJoin(a[k], b[k], mode);
@@ -50,5 +55,5 @@ ObjJoin = (a, b, mode) => {
 }
 
 // obj is basically a and this is not really good although it works
-let obj = ObjJoin(a, b, 's');
+let obj = ObjJoin(a, b, '+');
 console.log(obj);
