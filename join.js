@@ -1,40 +1,53 @@
-let a = {
+const a = {
     hello: {
-        world: 1
-    },
-    number: {
-        one: 1
-    },
-    test: {
-        two: 2
-    }
-};
-
-let b = {
-    hello: {
-        world: 2
+        world: 'hello'
     },
     number: {
         one: 2
     },
     test: {
         two: 3
+    },
+    extra: {
+        more: {
+            info: 1
+        }
+    }
+};
+
+const b = {
+    hello: {
+        world: 3
+    },
+    number: {
+        one: 2
+    },
+    test: {
+        two: 1
     }
 };
 
 /**
  * Take in two objs and mode ('a' for sum, 's' for subtract)
+ * Join only both objs have certain key
  */
-ObjMerge = (a, b, mode) => {
-    for (let key in a) {
-        if (Object.keys(b[key]).length === 0) {
-            a[key] += b[key];
-        } else if (b[key] != null) {
-            ObjMerge(a[key], b[key], mode);
+ObjJoin = (a, b, mode) => {
+    for (let k in a) {
+        if (b[k] != null) {
+            if (typeof b[k] !== 'object') {
+                // Add or subtract values
+                if (mode === 's') a[k] -= b[k];
+                if (mode === 'a') a[k] += b[k];
+            } else {
+                // go deeper
+                ObjJoin(a[k], b[k], mode);
+            }
+        } else {
+            delete a[k];
         }
     }
     return a;
 }
 
-let obj = ObjMerge(a, b, 'a');
-console.log(obj, a);
+let obj = ObjJoin(a, b, 's');
+console.log(obj);
