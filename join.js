@@ -5,7 +5,7 @@ const ship = JSON.parse('{"status":"ok","meta":{"count":1,"hidden":null},"data":
  * Take in two objs and mode ('a' for sum, 's' for subtract)
  * Join only both objs have certain key
  */
-ObjJoin = (a, b, mode) => {
+objJoin = (a, b, mode) => {
     for (let k in a) {
         if (b[k] != null) {
             if (typeof b[k] !== 'object') {
@@ -24,6 +24,6 @@ ObjJoin = (a, b, mode) => {
 }
 
 // obj is basically a and this is not really good although it works
-let obj = ObjJoin(ship, ship, '-');
+let obj = objJoin(ship, ship, '-');
 // Everything should be zero (identical data)
 console.log(obj.data['2011774448'][0].pvp);
