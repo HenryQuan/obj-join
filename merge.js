@@ -80,15 +80,15 @@ function objMerge(map) {
         // add itself to merged
         merged[property] = value;
       } else if (type === 'object') {
-        merged[property] = Object.assign(value, curr);
+        merged[property] = Object.assign(curr, value);
       } 
     }
   }
-  console.log(merged);
   return merged;
 }
 
 objMerge(data);
+console.log(data);
 
 /**
  * 
@@ -96,30 +96,27 @@ objMerge(data);
  * @param {Map<string, object>} counter 
  */
 function objOptional(obj, counter, path) {
-  // Get inside objects
-  for (const outKey in obj) {
-    const outObj = obj[outKey];
-    // Check if properties are optional
-    for (const inKey in outObj) {
-      const inObj = outObj[inKey];
-      
-      let currPath = '';
-      if (path === '') currPath = inKey;
-      else currPath = path + '.' + inKey;
+  for (const key in obj) {
+    const value = obj[key];
+    
+    let currPath = '';
+    if (path === '') currPath = key;
+    else currPath = path + '.' + key;
 
-      if (counter[currPath] == null) {
-        counter[currPath] = 1;
-      } else {
-        counter[currPath]++;
-      }
-  
-      if (typeof inObj === 'object') {
-        objOptional(inObj, counter, currPath);
-      }
-  }
+    if (counter[currPath] == null) {
+      counter[currPath] = 1;
+    } else {
+      counter[currPath]++;
+    }
+
+    if (typeof value === 'object') {
+      objOptional(value, counter, currPath);
+    }
   }
 }
 
 const counter = new Map();
-objOptional(data, counter, '');
+for (const key in data) {
+  objOptional(data[key], counter, '');
+}
 console.log(counter);
