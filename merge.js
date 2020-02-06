@@ -69,20 +69,12 @@ const data = JSON.parse(`
  */
 function objMerge(map) {
   const merged = {};
-  const optional = new Map();
   for (const key in map) {
     const temp = map[key];
     for (const property in temp) {
       const value = temp[property];
       const type = typeof value;
       const curr = merged[property];
-
-      // Store all keys
-      if (optional[property] == null) {
-        optional[property] = 1;
-      } else {
-        optional[property]++;
-      }
 
       if (curr == null) {
         // add itself to merged
@@ -92,8 +84,42 @@ function objMerge(map) {
       } 
     }
   }
-  console.log(merged, optional);
-  return [merged, optional];
+  console.log(merged);
+  return merged;
 }
 
 objMerge(data);
+
+/**
+ * 
+ * @param {any} array 
+ * @param {Map<string, object>} counter 
+ */
+function objOptional(obj, counter, path) {
+  // Get inside objects
+  for (const outKey in obj) {
+    const outObj = obj[outKey];
+    // Check if properties are optional
+    for (const inKey in outObj) {
+      const inObj = outObj[inKey];
+      
+      let currPath = '';
+      if (path === '') currPath = inKey;
+      else currPath = path + '.' + inKey;
+
+      if (counter[currPath] == null) {
+        counter[currPath] = 1;
+      } else {
+        counter[currPath]++;
+      }
+  
+      if (typeof inObj === 'object') {
+        objOptional(inObj, counter, currPath);
+      }
+  }
+  }
+}
+
+const counter = new Map();
+objOptional(data, counter, '');
+console.log(counter);
